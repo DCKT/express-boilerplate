@@ -1,0 +1,21 @@
+html
+  head
+    title
+      if title
+        = title
+      else
+        | Node Starter kit
+    link(rel="stylesheet", href="/stylesheets/style.css")
+  body
+    nav
+      a(href="/") Accueil 
+
+    if error
+      .error
+        p= error.message
+    else if info
+      .info
+        p= info.message
+
+
+    block content
