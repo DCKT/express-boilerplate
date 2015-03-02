@@ -25,7 +25,7 @@
     "body-parser": "^1.9.0",
     "express": "~4.9.0",
     "jade": "~1.6.0",
-    "method-override": "^2.3.0",
+    "method-override": "^2.3.0"
   },
   "homepage": "https://github.com/DCKT/Node-Starter-kit"
 }
