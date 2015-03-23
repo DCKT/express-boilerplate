@@ -15,7 +15,7 @@ require('./config/middleware')(app, express);
 ********************* */
 app.use('/', Router.index);
 app.use(function(req, res, next){
-  res.render('404', {
+  res.render('global/404', {
     title: 'Page introuvable !'
   });
 });
