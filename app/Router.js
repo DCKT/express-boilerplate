@@ -1,3 +1,3 @@
 module.exports = {
-  home: require('./routes/home')
+  index: require('./routes/IndexRoute')
 }
