@@ -3,19 +3,16 @@ html
     title
       if title
         = title
-      else
-        | Awesome site
+      
+      | Awesome site
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
     nav
       a(href="/") Accueil 
 
-    if error
-      .error
-        p= error.message
-    else if info
-      .info
-        p= info.message
+    if flash
+      .flash(class="#{flash.type}")
+        p= flash.message
 
 
     block content

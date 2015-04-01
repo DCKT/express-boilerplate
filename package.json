@@ -1,25 +1,26 @@
 {
-  "name": "Node-Starter-kit",
+  "name": "express-boilerplate",
   "version": "1.0.0",
-  "description": "Starter kit for developing web application",
+  "description": "expressjs boilerplate",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "babel-node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/DCKT/Node-Starter-kit.git"
+    "url": "https://github.com/DCKT/express-boilerplate.git"
   },
   "keywords": [
     "kit",
     "express",
-    "starter"
+    "starter",
+    "boilerplate"
   ],
   "author": "Thomas Deconinck",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/DCKT/Node-Starter-kit/issues"
+    "url": "https://github.com/DCKT/express-boilerplate/issues"
   },
   "dependencies": {
     "body-parser": "^1.9.0",
@@ -27,5 +28,5 @@
     "jade": "~1.6.0",
     "method-override": "^2.3.0"
   },
-  "homepage": "https://github.com/DCKT/Node-Starter-kit"
+  "homepage": "https://github.com/DCKT/express-boilerplate"
 }
