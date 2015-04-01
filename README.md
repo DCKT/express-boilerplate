@@ -1,4 +1,10 @@
-Node-Starter-kit
+Express boilerplate
 ================
 
-Starter kit for developing web application
+## Install
+
+- Clone the repo 
+- `npm i`
+- `node server`
+
+## Structure
