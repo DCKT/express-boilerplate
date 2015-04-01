@@ -1,8 +1,8 @@
-var bodyParser = require('body-parser'),
-methodOverride = require('method-override'),
-path           = require('path');
+import bodyParser from 'body-parser';
+import methodOverride from 'method-override';
+import path from 'path';
 
-module.exports = function (app, express) {
+export default function (app, express) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
     extended: true

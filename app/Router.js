@@ -1,3 +1,3 @@
-module.exports = {
-  index: require('./routes/IndexRoute')
-}
+export default {
+  Index: require('./routes/IndexRoute')
+};
