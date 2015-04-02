@@ -2,3 +2,6 @@ extends ./layout/base
 
 block content
   h1 Hello World
+
+  for book in books
+    h3= book.title
