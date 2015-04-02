@@ -1,16 +1,10 @@
-import mysql from '../../config/mysql';
+import query from '../../utils/query';
 
 export default {
   findAll(cb) {
-    return new Promise(function (resolve, reject) {
-      mysql.query('SELECT * FROM books', function (err, result) {
-
-        if (err) {
-          reject(err);
-        }
-        
-        resolve(result);
-      });
-    });
+    return query('SELECT * FROM books');
+  },
+  findById(id) {
+    return query('SELECT * FROM books WHERE id = ?', [id]);
   }
 }
