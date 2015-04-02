@@ -43,19 +43,19 @@ export default {
 };
 ```
 
-#### Models
+### Models
 
 Actualy, I didn't implemented the Model pattern yet. I should coming soon with MySQL as DBMS.
 
 
-#### Views
+### Views
 
 This boilerplate use **Jade** for templating, if you prefer ejs, you just need to edit the `middleware.js` file in the config folder.
 
 As I said for controller and routes, it's almost the same for the views. You should create a folder based on your routes (ex: users), create a
 **users** folder who will contain all the view concerned by the user.
 
-#### Routes
+### Routes
 
 The routes files are used for making the relation between your controller and the URLs. Here is an example :
 ```js
@@ -79,7 +79,7 @@ export default router;
 
 As you can see, I put a function according the HTTP verb like here **index.get** for the GET on `/`.
 
-#### Router.js
+### Router.js
 
 The **Router.js** may intrigue you, it serves to handle all of your routes. Here is an example :
 ```js
