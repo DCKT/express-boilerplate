@@ -19,12 +19,16 @@ All the code is written with ES6 syntax, so you have to install [Babel](https://
 MVC pattern is cool and simple to undertand, so it's based on him.
 First, you have an **app** folder who will contain all code of your application :
 
+**app/**
 - [controllers](#controller)
 - [models](#models)
 - [views](#views)
 - [routes](#routes)
 - <a href="#routerjs">Router.js</a>
+ 
+**assets/**
 
+**config/**
 ### Controller
 
 A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create **one controller per route**, so if you create a **/users** route the controller should be named **UsersController**. This pattern allow you to quickly find the file you want in your text editor. 
@@ -106,3 +110,8 @@ This boilerplate set the **assets** folder for all of your static files. Some fo
 - fonts
 
 In your views, the links will look like this : `/stylesheets/style.css` or `/images/logo.png`.
+
+## Config
+
+The folder **config** is design to keep all config files like middleware, mysql config, etc..
+The idea of this folder is to separate the logic of the configuration. With MySQL as example, you just have to create the connection and export the object for making queries.
