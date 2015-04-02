@@ -2,13 +2,15 @@ import mysql from '../../config/mysql';
 
 export default {
   findAll(cb) {
-    mysql.query('SELECT * FROM books', function (err, result) {
+    return new Promise(function (resolve, reject) {
+      mysql.query('SELECT * FROM books', function (err, result) {
 
-      if (err) {
-        console.error(err);
-      }
-      
-      cb(result);
-    })
+        if (err) {
+          reject(err);
+        }
+        
+        resolve(result);
+      });
+    });
   }
 }
