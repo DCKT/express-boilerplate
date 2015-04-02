@@ -95,3 +95,14 @@ Now you have to import just one file in your **server.js** :
 
 import { Index } from './app/Router';
 ```
+
+## Assets
+
+This boilerplate set the **assets** folder for all of your static files. Some folders are already available :
+
+- stylesheets
+- javascripts
+- images
+- fonts
+
+In your views, the links will look like this : `/stylesheets/style.css` or `/images/logo.png`.
