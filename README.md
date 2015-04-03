@@ -70,8 +70,47 @@ connection.connect(function (err) {
 export default connection;
 ```
 
-Don't forget to use the correct database and login/password !
+Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. This file will use a function utility called **query**. Here is an example :
 
+```js
+// Book.js
+import query from '../../utils/query';
+
+export default {
+  findAll(cb) {
+    return query('SELECT * FROM books');
+  },
+  findById(id) {
+    return query('SELECT * FROM books WHERE id = ?', [id]);
+  }
+}
+```
+
+query is designed for simplifying the model and **use Promise** ! So when you call the method in your controller, you have to use the **then** and **catch** functions :
+```js
+// BooksController.js
+import Book from '../models/Book';
+
+export default {
+  index: {
+    get(req, res) {
+    
+      Book.findAll()
+        .then(books => {
+          res.locals.title = "Home";
+          res.locals.books = books;
+          res.render('index');
+        })
+        .catch(err => {
+          console.error(err);
+        });
+
+    }
+  }
+}
+```
+
+Easy to read and understand isn't it ?
 
 ### Views
 
