@@ -49,7 +49,28 @@ export default {
 
 ### Models
 
-Actualy, I didn't implemented the Model pattern yet. I should coming soon with MySQL as DBMS.
+This boilerplate use MySQL as default. The configuration file is called **mysql.js** and is located in the **config** folder. Here is the basic setup :
+```js
+import mysql from 'mysql';
+
+var connection = mysql.createConnection({
+  host: 'localhost',
+  database: 'test',
+  user: 'root',
+  password: ''
+});
+
+connection.connect(function (err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+});
+
+export default connection;
+```
+
+Don't forget to use the correct database and login/password !
 
 
 ### Views
