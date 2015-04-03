@@ -10,7 +10,6 @@ url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/mas
 
 
 fs.stat(`${PATHS.routes}/${uppercasedName}Route.js`, exist => {
-  console.log(exist)
   exist == null ?  fileExist() : createFile()
 });
 
@@ -21,7 +20,7 @@ function createFile () {
       return res.text();
     })
     .then(body => {
-      var file = body.replace(/Home|Index/g, uppercasedName);
+      var file = body.replace(/Home|Index/g, uppercasedName).replace('path: /', `path: /${name.toLowerCase()}`);
 
       fs.writeFile(`${PATHS.routes}/${uppercasedName}Route.js`, file, (err, data) => {
         if (err) {
