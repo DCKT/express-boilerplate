@@ -8,7 +8,7 @@ var name       = process.argv.slice(3)[0],
 type           = process.argv.slice(2)[0],
 camelCasedType = `${type[0].toUpperCase()}${type.slice(1)}`,
 camelCasedName = `${name[0].toUpperCase()}${name.slice(1)}`,
-url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/master/app/routes/Index${camelCasedType}.js`;
+url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/master/app/${type}s/Index${camelCasedType}.js`;
 
 
 fs.stat(`${PATHS.routes}/${camelCasedName}${camelCasedType}.js`, exist => {
