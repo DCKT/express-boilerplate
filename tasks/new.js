@@ -10,8 +10,9 @@ camelCasedType = `${type[0].toUpperCase()}${type.slice(1)}`,
 camelCasedName = `${name[0].toUpperCase()}${name.slice(1)}`,
 url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/master/app/${type}s/Index${camelCasedType}.js`;
 
+var filePath = PATHS[type];
 
-fs.stat(`${PATHS.routes}/${camelCasedName}${camelCasedType}.js`, exist => {
+fs.stat(`${filePath}/${camelCasedName}${camelCasedType}.js`, exist => {
   exist == null ?  fileExist() : createFile()
 });
 
@@ -23,8 +24,6 @@ function createFile () {
     })
     .then(body => {
       var file = body.replace(/Home|Index/g, camelCasedName).replace('path: /', `path: /${name.toLowerCase()}`);
-
-      var filePath = PATHS[type];
 
       fs.writeFile(`${filePath}/${camelCasedName}${camelCasedType}.js`, file, (err, data) => {
         if (err) {
