@@ -8,11 +8,13 @@ var name       = process.argv.slice(3)[0],
 type           = process.argv.slice(2)[0],
 camelCasedType = `${type[0].toUpperCase()}${type.slice(1)}`,
 camelCasedName = `${name[0].toUpperCase()}${name.slice(1)}`,
-url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/master/app/${type}s/Index${camelCasedType}.js`;
+isModel        = camelCasedType === "Model",
+baseFileName   = isModel ? "Book" : `Index${camelCasedType}`,
+url            = `https://raw.githubusercontent.com/DCKT/express-boilerplate/master/app/${type}s/${baseFileName}.js`,
+filePath       = PATHS[type],
+fileName       = isModel ? camelCasedName : `${camelCasedName}${camelCasedType}`;
 
-var filePath = PATHS[type];
-
-fs.stat(`${filePath}/${camelCasedName}${camelCasedType}.js`, exist => {
+fs.stat(`${filePath}/${fileName}.js`, exist => {
   exist == null ?  fileExist() : createFile()
 });
 
@@ -23,9 +25,17 @@ function createFile () {
       return res.text();
     })
     .then(body => {
-      var file = body.replace(/Home|Index/g, camelCasedName).replace('path: /', `path: /${name.toLowerCase()}`);
 
-      fs.writeFile(`${filePath}/${camelCasedName}${camelCasedType}.js`, file, (err, data) => {
+      var file;
+
+      if (isModel) {
+        file = body.replace(/books/g, camelCasedName);
+      }
+      else {
+        file = body.replace(/Home|Index/g, camelCasedName).replace('path: /', `path: /${name.toLowerCase()}`);
+      }
+
+      fs.writeFile(`${filePath}/${fileName}.js`, file, (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -42,5 +52,5 @@ function createFile () {
 
 function fileExist () {
   console.log("\n###### WAIT ######");
-  console.log(`You already have a route file named : ${camelCasedName}Route.js`);
+  console.log(`You already have a route file named : ${fileName}.js`);
 }
