@@ -16,7 +16,7 @@ All the code is written with ES6 syntax, so you have to install [Babel](https://
 
 ## Structure
 
-MVC pattern is cool and simple to undertand, so it's based on him.
+MVC pattern is cool and simple to understand, so it's based on him.
 First, you have an **app** folder who will contain all code of your application :
 
 **app/**
@@ -70,23 +70,66 @@ connection.connect(function (err) {
 export default connection;
 ```
 
-Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. This file will use a function utility called **query**. Here is an example :
+Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
+This file will use a function utility called **query**. Here is an example :
 
 ```js
-// Book.js
+// ORM.js
 import query from '../../utils/query';
 
-export default {
-  findAll(cb) {
-    return query('SELECT * FROM books');
-  },
-  findById(id) {
-    return query('SELECT * FROM books WHERE id = ?', [id]);
+export default class ORM {
+  static use(table) {
+    this.table = table;
+  }
+
+  static findAll() {
+    return query(`SELECT * FROM ${this.table}`);
+  }
+
+  static findById(id) {
+    return query(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
+  }
+
+  static remove(id) {
+    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]); 
+  }
+
+  save(obj) {
+    return query(`INSERT INTO ${this.table} SET ?`, [obj]);
   }
 }
 ```
 
-query is designed for simplifying the model and **use Promise** ! So when you call the method in your controller, you have to use the **then** and **catch** functions :
+query is designed for simplifying the model and **use Promise** ! 
+Notice the **use** static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :
+
+```js
+// Book.js
+import ORM from './ORM';
+
+ORM.use("books");
+
+export default class Book extends ORM {
+
+  constructor(opt) {
+    this.title = opt.title;
+
+    return this;
+  }
+
+  get book() {
+    return {
+      title: this.title
+    }
+  }
+
+  save() {
+    return super.save(this.book);
+  }
+}
+```
+The class contructor return **this** for chaining and for example use the save method.
+So when you call the method in your controller, you have to use the **then** and **catch** functions :
 ```js
 // BooksController.js
 import Book from '../models/Book';
