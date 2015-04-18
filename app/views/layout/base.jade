@@ -1,7 +1,10 @@
 html
   head
     title
-      block title
+      if title
+        = title
+      
+      |  - Awesome site
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
     nav

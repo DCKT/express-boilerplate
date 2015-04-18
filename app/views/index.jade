@@ -1,7 +1,7 @@
 extends ./layout/base
 
-block title
-  |Index
-
 block content
-  h1 Screencasts.ninja
+  h1 Hello World
+
+  for book in books
+    h3= book.title
