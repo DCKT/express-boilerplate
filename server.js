@@ -1,6 +1,6 @@
 import express from 'express';
 import http from 'http';
-import { Index } from './app/Router';
+import { Index, Videos, Series } from './app/Router';
 
 var app = express(),
 server  = http.createServer(app);
@@ -16,6 +16,8 @@ require('./config/middleware')(app, express);
 * ROUTES
 ********************* */
 app.use('/', Index);
+app.use('/videos', Videos);
+app.use('/series', Series);
 
 app.use(function(req, res, next){
   res.render('global/404', {

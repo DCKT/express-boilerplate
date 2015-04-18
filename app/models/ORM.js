@@ -8,8 +8,13 @@ export default class ORM {
   static findAll() {
     return query(`SELECT * FROM ${this.table}`);
   }
+
   static findById(id) {
     return query(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
+  }
+
+  static remove(id) {
+    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]); 
   }
 
   save(obj) {
