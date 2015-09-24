@@ -1,17 +1,19 @@
-import mysql from 'mysql';
+'use strict';
+
+let mysql = require('mysql');
 
 var connection = mysql.createConnection({
   host: 'localhost',
   database: 'test',
   user: 'root',
-  password: ''
+  password: '',
 });
 
-connection.connect(function (err) {
+connection.connect(function(err) {
   if (err) {
     console.error('error connecting: ' + err.stack);
     return;
   }
 });
 
-export default connection;
+module.exports = connection;

@@ -1,9 +1,10 @@
-import express from 'express';
-import http from 'http';
-import { Index } from './app/Router';
+'use strict';
 
-var app = express(),
-server  = http.createServer(app);
+let express   = require('express');
+let http      = require('http');
+let { Index } = require ('./app/Router');
+let app       = express();
+let server    = http.createServer(app);
 
 
 
@@ -17,11 +18,11 @@ require('./config/middleware')(app, express);
 ********************* */
 app.use('/', Index);
 
-app.use(function(req, res, next){
+app.use((req, res, next) => {
   res.render('global/404', {
-    title: 'Page introuvable !'
+    title: 'Page introuvable !',
   });
 });
 
 server.listen(8080);
-console.log("Server started on localhost:8080\n");
+console.log('Server started on localhost:8080\n');

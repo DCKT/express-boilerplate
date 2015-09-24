@@ -1,13 +1,16 @@
-import mysql from '../config/mysql';
+'use strict';
 
-export default function (query, values) {
-  return new Promise(function (resolve, reject) {
-    mysql.query(query, values, function (err, result) {
+let mysql = require('../config/mysql');
+
+module.exports = function(query, values) {
+
+  return new Promise((resolve, reject) => {
+    mysql.query(query, values, (err, result) => {
       if (err) {
         reject(err);
       }
 
       resolve(result);
     });
-  })
-}
+  });
+};

@@ -1,9 +1,11 @@
-import ORM from './ORM';
-import query from '../../utils/query';
+'use strict';
+
+let ORM = require('./ORM');
+let query = require('../../utils/query');
 
 ORM.use("books");
 
-export default class Book extends ORM {
+class Book extends ORM {
 
   constructor(opt) {
     this.title = opt.title;
@@ -21,3 +23,5 @@ export default class Book extends ORM {
     return super.save(this.book);
   }
 }
+
+module.exports = Book;

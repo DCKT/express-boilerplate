@@ -1,14 +1,14 @@
+'use strict';
+
 /**
 * Home Route
 * path: /
 ******************** */
 
-import express from "express";
-import Controller from "../controllers/IndexController";
-
-var router = express.Router();
-
+let express    = require('express');
+let Controller = require('../controllers/IndexController');
+let router     = express.Router();
 
 router.get('/', Controller.index.get);
 
-export default router;
+module.exports = router;

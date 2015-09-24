@@ -1,11 +1,13 @@
-import bodyParser from 'body-parser';
-import methodOverride from 'method-override';
-import path from 'path';
+'use strict';
 
-export default function (app, express) {
+let bodyParser     = require('body-parser');
+let methodOverride = require('method-override');
+let path           = require('path');
+
+module.exports = function(app, express) {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
-    extended: true
+    extended: true,
   }));
   app.use(methodOverride());
   app.set('views', path.join(__dirname, '../app/views'));
