@@ -7,10 +7,10 @@ with the Ember.js framework that I like too.
 
 ## Install
 
-All the code is written with ES6 syntax, so you have to install [Babel](https://babeljs.io/docs/using-babel/) and use the `babel-node` command.
+All the code is written with ES6 syntax, you need the Node v4 version.
 
 
-- Clone the repo 
+- Clone the repo
 - `npm i`
 - `npm start`
 
@@ -25,13 +25,13 @@ First, you have an **app** folder who will contain all code of your application 
 - [views](#views)
 - [routes](#routes)
 - <a href="#routerjs">Router.js</a>
- 
+
 **assets/**
 
 **config/**
 ### Controller
 
-A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create **one controller per route**, so if you create a **/users** route the controller should be named **UsersController**. This pattern allow you to quickly find the file you want in your text editor. 
+A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create **one controller per route**, so if you create a **/users** route the controller should be named **UsersController**. This pattern allow you to quickly find the file you want in your text editor.
 
 The structure of a controller is simple, export an object of methods. Here is an example :
 ```js
@@ -91,7 +91,7 @@ export default class ORM {
   }
 
   static remove(id) {
-    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]); 
+    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
   }
 
   save(obj) {
@@ -100,7 +100,7 @@ export default class ORM {
 }
 ```
 
-query is designed for simplifying the model and **use Promise** ! 
+query is designed for simplifying the model and **use Promise** !
 Notice the **use** static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :
 
 ```js
@@ -137,7 +137,7 @@ import Book from '../models/Book';
 export default {
   index: {
     get(req, res) {
-    
+
       Book.findAll()
         .then(books => {
           res.locals.title = "Home";

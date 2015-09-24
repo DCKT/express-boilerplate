@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node server.js",
-    "new": "babel-node tasks/new.js"
+    "start": "node server.js --harmony_destructuring",
+    "new": "node tasks/new.js --harmony_destructuring"
   },
   "repository": {
     "type": "git",
