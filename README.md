@@ -50,7 +50,7 @@ The structure of a controller is simple, export an object of methods. Here is an
 ```js
 // IndexController.js
 
-export default {
+module.exports = {
   index: {
     get(req, res) {
       res.locals.title = "Home";
@@ -64,7 +64,9 @@ export default {
 
 This boilerplate use MySQL as default. The configuration file is called **mysql.js** and is located in the **config** folder. Here is the basic setup :
 ```js
-import mysql from 'mysql';
+'use strict';
+
+let mysql = require('mysql');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -87,10 +89,16 @@ Don't forget to use the correct database and login/password ! You can now create
 This file will use a function utility called **query**. Here is an example :
 
 ```js
-// ORM.js
-import query from '../../utils/query';
+'use strict';
 
-export default class ORM {
+// ORM.js
+let query = rootRequire('utils/query');
+
+class ORM {
+  constructor(table) {
+    this.table = table;
+  }
+  
   static use(table) {
     this.table = table;
   }
@@ -111,20 +119,22 @@ export default class ORM {
     return query(`INSERT INTO ${this.table} SET ?`, [obj]);
   }
 }
+
+module.exports = ORM;
 ```
 
 query is designed for simplifying the model and **use Promise** !
 Notice the **use** static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :
 
 ```js
+'use strict';
 // Book.js
-import ORM from './ORM';
+let ORM = rootRequire('utils/ORM');
 
-ORM.use("books");
-
-export default class Book extends ORM {
+class Book extends ORM {
 
   constructor(opt) {
+    super('books');
     this.title = opt.title;
 
     return this;
@@ -140,14 +150,17 @@ export default class Book extends ORM {
     return super.save(this.book);
   }
 }
+
+module.exports = new Book();
 ```
 The class contructor return **this** for chaining and for example use the save method.
 So when you call the method in your controller, you have to use the **then** and **catch** functions :
 ```js
+'use strict';
 // BooksController.js
-import Book from '../models/Book';
+let Book = require('app/models/Book');
 
-export default {
+module.exports = {
   index: {
     get(req, res) {
 
@@ -179,6 +192,7 @@ As I said for controller and routes, it's almost the same for the views. You sho
 
 The routes files are used for making the relation between your controller and the URLs. Here is an example :
 ```js
+'use strict';
 // IndexRoute.js
 
 /**
@@ -186,10 +200,9 @@ The routes files are used for making the relation between your controller and th
 * path: /
 ******************** */
 
-import express from "express";
-import Controller from "../controllers/IndexController";
-
-var router = express.Router();
+let express = require('express');
+let Controller = rootRequire('app/controllers/IndexController');
+let router = express.Router();
 
 
 router.get('/', Controller.index.get);
@@ -205,15 +218,17 @@ The **Router.js** may intrigue you, it serves to handle all of your routes. Here
 ```js
 // Router.js
 
-export default {
-  Index: require('./routes/IndexRoute')
-}
-```
-Now you have to import just one file in your **server.js** :
-```js
-// server.js
+module.exports = [
+  {
+    path: '/',
+    handler: rootRequire('app/routes/IndexRoute'),
+  },
+  {
+    path: '/books',
+    handler: rootRequire('app/routes/BooksRoute'),
+  },
+];
 
-import { Index } from './app/Router';
 ```
 
 ## Assets
