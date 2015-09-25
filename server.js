@@ -1,11 +1,10 @@
-import express from 'express';
-import http from 'http';
-import { Index } from './app/Router';
-
-var app = express(),
-server  = http.createServer(app);
-
-
+'use strict';
+require('./utils/rootRequire')();
+let express = require('express');
+let http    = require('http');
+let Router  = rootRequire('app/Router');
+let app     = express();
+let server  = http.createServer(app);
 
 /**
 * MIDDLEWARE
@@ -15,13 +14,17 @@ require('./config/middleware')(app, express);
 /**
 * ROUTES
 ********************* */
-app.use('/', Index);
+app.use(rootRequire('utils/flash'));
 
-app.use(function(req, res, next){
+Router.forEach(route => {
+  app.use(route.path, route.handler);
+});
+
+app.use((req, res, next) => {
   res.render('global/404', {
-    title: 'Page introuvable !'
+    title: 'Page introuvable !',
   });
 });
 
 server.listen(8080);
-console.log("Server started on localhost:8080\n");
+console.log('Server started on localhost:8080\n');

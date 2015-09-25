@@ -1,17 +1,9 @@
-import Book from '../models/Book';
+'use strict';
 
-export default {
+module.exports = {
   index: {
     get(req, res) {
-      Book.findAll()
-        .then(books => {
-          res.locals.books = books;
-          res.locals.title = "Home";
-          res.render('index');
-        })
-        .catch(err => {
-          console.error(err);
-        })
-    }
-  }
-}
+      res.render('index');
+    },
+  },
+};

@@ -1,0 +1,14 @@
+extends ../layout/base
+
+block title
+  |Add new book
+
+block content
+  h1 Add new book
+  
+  form(action="" method="POST")
+    div
+      label(for="title") Title :
+      input(type="text" name="title" id="title")
+    div
+      input(type="submit", value="Add")

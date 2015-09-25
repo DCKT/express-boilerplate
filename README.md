@@ -7,12 +7,25 @@ with the Ember.js framework that I like too.
 
 ## Install
 
-All the code is written with ES6 syntax, so you have to install [Babel](https://babeljs.io/docs/using-babel/) and use the `babel-node` command.
+All the code is written with ES2015 syntax, you need the Node v4 version.
 
 
-- Clone the repo 
+- Clone the repo
 - `npm i`
-- `npm start`
+- `npm start` -> Will start a nodemon instance for your server
+
+## ES2015
+
+This boilerplate use ES2015 syntax with Node.js 4.0, you can check out the [feature available here](https://nodejs.org/en/docs/es6/)
+
+## rootRequire
+
+**rootRequire** is a global function designed to avoid some excessive path in your application and avoid NODE_PATH configuration (specialy for Windows users).
+Instead of calling require, just call rootRequire and the path of your module. **Remember**, the path always start from the top of your application :
+
+```js
+let Book = rootRequire('app/models/Book');
+```
 
 ## Structure
 
@@ -25,19 +38,19 @@ First, you have an **app** folder who will contain all code of your application 
 - [views](#views)
 - [routes](#routes)
 - <a href="#routerjs">Router.js</a>
- 
+
 **assets/**
 
 **config/**
 ### Controller
 
-A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create **one controller per route**, so if you create a **/users** route the controller should be named **UsersController**. This pattern allow you to quickly find the file you want in your text editor. 
+A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create **one controller per route**, so if you create a **/users** route the controller should be named **UsersController**. This pattern allow you to quickly find the file you want in your text editor.
 
 The structure of a controller is simple, export an object of methods. Here is an example :
 ```js
 // IndexController.js
 
-export default {
+module.exports = {
   index: {
     get(req, res) {
       res.locals.title = "Home";
@@ -51,7 +64,9 @@ export default {
 
 This boilerplate use MySQL as default. The configuration file is called **mysql.js** and is located in the **config** folder. Here is the basic setup :
 ```js
-import mysql from 'mysql';
+'use strict';
+
+let mysql = require('mysql');
 
 var connection = mysql.createConnection({
   host: 'localhost',
@@ -67,17 +82,23 @@ connection.connect(function (err) {
   }
 });
 
-export default connection;
+module.exports = connection;
 ```
 
 Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
 This file will use a function utility called **query**. Here is an example :
 
 ```js
-// ORM.js
-import query from '../../utils/query';
+'use strict';
 
-export default class ORM {
+// ORM.js
+let query = rootRequire('utils/query');
+
+class ORM {
+  constructor(table) {
+    this.table = table;
+  }
+
   static use(table) {
     this.table = table;
   }
@@ -91,27 +112,29 @@ export default class ORM {
   }
 
   static remove(id) {
-    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]); 
+    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
   }
 
   save(obj) {
     return query(`INSERT INTO ${this.table} SET ?`, [obj]);
   }
 }
+
+module.exports = ORM;
 ```
 
-query is designed for simplifying the model and **use Promise** ! 
+query is designed for simplifying the model and **use Promise** !
 Notice the **use** static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :
 
 ```js
+'use strict';
 // Book.js
-import ORM from './ORM';
+let ORM = rootRequire('utils/ORM');
 
-ORM.use("books");
-
-export default class Book extends ORM {
+class Book extends ORM {
 
   constructor(opt) {
+    super('books');
     this.title = opt.title;
 
     return this;
@@ -127,17 +150,20 @@ export default class Book extends ORM {
     return super.save(this.book);
   }
 }
+
+module.exports = new Book();
 ```
 The class contructor return **this** for chaining and for example use the save method.
 So when you call the method in your controller, you have to use the **then** and **catch** functions :
 ```js
+'use strict';
 // BooksController.js
-import Book from '../models/Book';
+let Book = require('app/models/Book');
 
-export default {
+module.exports = {
   index: {
     get(req, res) {
-    
+
       Book.findAll()
         .then(books => {
           res.locals.title = "Home";
@@ -166,6 +192,7 @@ As I said for controller and routes, it's almost the same for the views. You sho
 
 The routes files are used for making the relation between your controller and the URLs. Here is an example :
 ```js
+'use strict';
 // IndexRoute.js
 
 /**
@@ -173,15 +200,14 @@ The routes files are used for making the relation between your controller and th
 * path: /
 ******************** */
 
-import express from "express";
-import Controller from "../controllers/IndexController";
-
-var router = express.Router();
+let express    = require('express');
+let Controller = rootRequire('app/controllers/IndexController');
+let router     = express.Router();
 
 
 router.get('/', Controller.index.get);
 
-export default router;
+module.exports = router;
 ```
 
 As you can see, I put a function according the HTTP verb like here **index.get** for the GET on `/`.
@@ -192,15 +218,17 @@ The **Router.js** may intrigue you, it serves to handle all of your routes. Here
 ```js
 // Router.js
 
-export default {
-  Index: require('./routes/IndexRoute')
-}
-```
-Now you have to import just one file in your **server.js** :
-```js
-// server.js
+module.exports = [
+  {
+    path: '/',
+    handler: rootRequire('app/routes/IndexRoute'),
+  },
+  {
+    path: '/books',
+    handler: rootRequire('app/routes/BooksRoute'),
+  },
+];
 
-import { Index } from './app/Router';
 ```
 
 ## Assets

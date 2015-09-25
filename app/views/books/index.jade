@@ -1,0 +1,14 @@
+extends ../layout/base
+
+block title
+  |Books index
+
+block content
+  h1 Books list
+  
+  if books.length
+    for book in books
+      div
+        strong= book.title
+  else
+    div Oups.. You have no books registered

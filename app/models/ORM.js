@@ -1,18 +1,23 @@
-import query from '../../utils/query';
+'use strict';
 
-export default class ORM {
-  static use(table) {
+let query = require('../../utils/query');
+
+class ORM {
+  constructor(table) {
     this.table = table;
   }
 
-  static findAll() {
+  findAll() {
     return query(`SELECT * FROM ${this.table}`);
   }
-  static findById(id) {
+
+  findById(id) {
     return query(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
   }
 
   save(obj) {
     return query(`INSERT INTO ${this.table} SET ?`, [obj]);
   }
-}
+};
+
+module.exports = ORM;
