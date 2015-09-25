@@ -7,12 +7,16 @@ with the Ember.js framework that I like too.
 
 ## Install
 
-All the code is written with ES6 syntax, you need the Node v4 version.
+All the code is written with ES2015 syntax, you need the Node v4 version.
 
 
 - Clone the repo
 - `npm i`
 - `npm start` -> Will start a nodemon instance for your server
+
+## ES2015
+
+This boilerplate use ES2015 syntax with Node.js 4.0, you can check out the [feature available here](https://nodejs.org/en/docs/es6/)
 
 ## rootRequire
 
