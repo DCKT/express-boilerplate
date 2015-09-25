@@ -1,22 +1,23 @@
 'use strict';
 
-let ORM = require('./ORM');
-let query = require('../../utils/query');
-
-ORM.use("books");
+let ORM   = require('./ORM');
+let query = rootRequire('utils/query');
 
 class Book extends ORM {
 
   constructor(opt) {
-    this.title = opt.title;
+    super('books');
+    this.book = {};
 
     return this;
   }
 
-  get book() {
-    return {
-      title: this.title
+  new(values) {
+    for (let value in values) {
+      this.book[value] = values[value];
     }
+
+    return this;
   }
 
   save() {
@@ -24,4 +25,4 @@ class Book extends ORM {
   }
 }
 
-module.exports = Book;
+module.exports = new Book();

@@ -3,15 +3,15 @@
 let query = require('../../utils/query');
 
 class ORM {
-  static use(table) {
+  constructor(table) {
     this.table = table;
   }
 
-  static findAll() {
+  findAll() {
     return query(`SELECT * FROM ${this.table}`);
   }
 
-  static findById(id) {
+  findById(id) {
     return query(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
   }
 
