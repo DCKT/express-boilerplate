@@ -5,8 +5,7 @@ html
       |  - Awesome site
     link(rel="stylesheet", href="/stylesheets/style.css")
   body
-    nav
-      a(href="/") Home 
+    include ./navigation.jade
 
     if flash
       .flash(class="#{flash.type}")

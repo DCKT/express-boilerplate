@@ -1,10 +1,10 @@
 'use strict';
 require('./utils/rootRequire')();
-let express   = require('express');
-let http      = require('http');
-let { Index } = rootRequire('app/Router');
-let app       = express();
-let server    = http.createServer(app);
+let express = require('express');
+let http    = require('http');
+let Router  = rootRequire('app/Router');
+let app     = express();
+let server  = http.createServer(app);
 
 /**
 * MIDDLEWARE
@@ -14,7 +14,11 @@ require('./config/middleware')(app, express);
 /**
 * ROUTES
 ********************* */
-app.use('/', Index);
+app.use(rootRequire('utils/flash'));
+
+Router.forEach(route => {
+  app.use(route.path, route.handler);
+});
 
 app.use((req, res, next) => {
   res.render('global/404', {
