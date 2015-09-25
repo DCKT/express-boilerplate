@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js --harmony_destructuring",
+    "start": "./node_modules/.bin/nodemon -w server.js --harmony_destructuring",
     "new": "node tasks/new.js --harmony_destructuring"
   },
   "repository": {
@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/DCKT/express-boilerplate",
   "devDependencies": {
-    "node-fetch": "^1.0.6"
+    "node-fetch": "^1.0.6",
+    "nodemon": "^1.7.0"
   }
 }

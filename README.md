@@ -12,7 +12,16 @@ All the code is written with ES6 syntax, you need the Node v4 version.
 
 - Clone the repo
 - `npm i`
-- `npm start`
+- `npm start` -> Will start a nodemon instance for your server
+
+## rootRequire
+
+**rootRequire** is a global function designed to avoid some excessive path in your application and avoid NODE_PATH configuration (specialy for Windows users).
+Instead of calling require, just call rootRequire and the path of your module. **Remember**, the path always start from the top of your application :
+
+```js
+let Book = rootRequire('app/models/Book');
+```
 
 ## Structure
 

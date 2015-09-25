@@ -1,12 +1,10 @@
 'use strict';
-
+require('./utils/rootRequire')();
 let express   = require('express');
 let http      = require('http');
-let { Index } = require ('./app/Router');
+let { Index } = rootRequire('app/Router');
 let app       = express();
 let server    = http.createServer(app);
-
-
 
 /**
 * MIDDLEWARE
