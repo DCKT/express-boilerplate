@@ -82,7 +82,7 @@ connection.connect(function (err) {
   }
 });
 
-export default connection;
+module.exports = connection;
 ```
 
 Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
@@ -98,7 +98,7 @@ class ORM {
   constructor(table) {
     this.table = table;
   }
-  
+
   static use(table) {
     this.table = table;
   }
@@ -200,14 +200,14 @@ The routes files are used for making the relation between your controller and th
 * path: /
 ******************** */
 
-let express = require('express');
+let express    = require('express');
 let Controller = rootRequire('app/controllers/IndexController');
-let router = express.Router();
+let router     = express.Router();
 
 
 router.get('/', Controller.index.get);
 
-export default router;
+module.exports = router;
 ```
 
 As you can see, I put a function according the HTTP verb like here **index.get** for the GET on `/`.
