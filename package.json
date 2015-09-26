@@ -4,7 +4,7 @@
   "description": "expressjs boilerplate",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha",
     "start": "./node_modules/.bin/nodemon -w ./ --harmony_destructuring",
     "new": "node tasks/new.js --harmony_destructuring"
   },
@@ -33,7 +33,9 @@
   },
   "homepage": "https://github.com/DCKT/express-boilerplate",
   "devDependencies": {
+    "mocha": "^2.3.3",
     "node-fetch": "^1.0.6",
-    "nodemon": "^1.7.0"
+    "nodemon": "^1.7.0",
+    "superagent": "^1.4.0"
   }
 }

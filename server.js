@@ -21,6 +21,7 @@ Router.forEach(route => {
 });
 
 app.use((req, res, next) => {
+  res.status(404);
   res.render('global/404', {
     title: 'Page introuvable !',
   });
