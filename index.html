@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Express-boilerplate by DCKT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Express-boilerplate</h1>
+      <h2 class="project-tagline">Express boilerplate using MVC pattern and ES2015</h2>
+      <a href="https://github.com/DCKT/express-boilerplate" class="btn">View on GitHub</a>
+      <a href="https://github.com/DCKT/express-boilerplate/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/DCKT/express-boilerplate/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="express-boilerplate" class="anchor" href="#express-boilerplate" aria-hidden="true"><span class="octicon octicon-link"></span></a>Express boilerplate</h1>
+
+<p>I like Ruby On Rails and his structure so I decided to follow their MVC conventions with the node module expressjs. I'm also inspired
+with the Ember.js framework that I like too.</p>
+
+<h2>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span class="octicon octicon-link"></span></a>Install</h2>
+
+<p>All the code is written with ES2015 syntax, you need the Node v4 version.</p>
+
+<ul>
+<li>Clone the repo</li>
+<li><code>npm i</code></li>
+<li>
+<code>npm start</code> -&gt; Will start a nodemon instance for your server</li>
+</ul>
+
+<h2>
+<a id="es2015" class="anchor" href="#es2015" aria-hidden="true"><span class="octicon octicon-link"></span></a>ES2015</h2>
+
+<p>This boilerplate use ES2015 syntax with Node.js 4.0, you can check out the <a href="https://nodejs.org/en/docs/es6/">feature available here</a></p>
+
+<h2>
+<a id="rootrequire" class="anchor" href="#rootrequire" aria-hidden="true"><span class="octicon octicon-link"></span></a>rootRequire</h2>
+
+<p><strong>rootRequire</strong> is a global function designed to avoid some excessive path in your application and avoid NODE_PATH configuration (specialy for Windows users).
+Instead of calling require, just call rootRequire and the path of your module. <strong>Remember</strong>, the path always start from the top of your application :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">let</span> Book <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>app/models/Book<span class="pl-pds">'</span></span>);</pre></div>
+
+<h2>
+<a id="structure" class="anchor" href="#structure" aria-hidden="true"><span class="octicon octicon-link"></span></a>Structure</h2>
+
+<p>MVC pattern is cool and simple to understand, so it's based on him.
+First, you have an <strong>app</strong> folder who will contain all code of your application :</p>
+
+<p><strong>app/</strong></p>
+
+<ul>
+<li><a href="#controller">controllers</a></li>
+<li><a href="#models">models</a></li>
+<li><a href="#views">views</a></li>
+<li><a href="#routes">routes</a></li>
+<li><a href="#routerjs">Router.js</a></li>
+</ul>
+
+<p><strong>assets/</strong></p>
+
+<p><strong>config/</strong></p>
+
+<h3>
+<a id="controller" class="anchor" href="#controller" aria-hidden="true"><span class="octicon octicon-link"></span></a>Controller</h3>
+
+<p>A controller is design to handle the logic of your application, so he will handle the request and send the response. You should create <strong>one controller per route</strong>, so if you create a <strong>/users</strong> route the controller should be named <strong>UsersController</strong>. This pattern allow you to quickly find the file you want in your text editor.</p>
+
+<p>The structure of a controller is simple, export an object of methods. Here is an example :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// IndexController.js</span>
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> {
+  index<span class="pl-k">:</span> {
+    <span class="pl-en">get</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>) {
+      res.locals.<span class="pl-c1">title</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Home<span class="pl-pds">"</span></span>;
+      res.render(<span class="pl-s"><span class="pl-pds">'</span>index<span class="pl-pds">'</span></span>);
+    }
+  }
+};</pre></div>
+
+<h3>
+<a id="models" class="anchor" href="#models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Models</h3>
+
+<p>This boilerplate use MySQL as default. The configuration file is called <strong>mysql.js</strong> and is located in the <strong>config</strong> folder. Here is the basic setup :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+
+<span class="pl-k">let</span> mysql <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>mysql<span class="pl-pds">'</span></span>);
+
+<span class="pl-k">var</span> connection <span class="pl-k">=</span> mysql.createConnection({
+  host<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>localhost<span class="pl-pds">'</span></span>,
+  database<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>,
+  user<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>root<span class="pl-pds">'</span></span>,
+  password<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>
+});
+
+connection.connect(<span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
+  <span class="pl-k">if</span> (err) {
+    <span class="pl-en">console</span>.<span class="pl-c1">error</span>(<span class="pl-s"><span class="pl-pds">'</span>error connecting: <span class="pl-pds">'</span></span> <span class="pl-k">+</span> err.stack);
+    <span class="pl-k">return</span>;
+  }
+});
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> connection;</pre></div>
+
+<p>Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like <strong>Book.js</strong>. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
+This file will use a function utility called <strong>query</strong>. Here is an example :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+
+<span class="pl-c">// ORM.js</span>
+<span class="pl-k">let</span> query <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>utils/query<span class="pl-pds">'</span></span>);
+
+<span class="pl-k">class</span> <span class="pl-en">ORM</span> {
+  <span class="pl-en">constructor</span>(<span class="pl-smi">table</span>) {
+    <span class="pl-v">this</span>.table <span class="pl-k">=</span> table;
+  }
+
+  <span class="pl-k">static</span> <span class="pl-en">use</span>(<span class="pl-smi">table</span>) {
+    <span class="pl-v">this</span>.table <span class="pl-k">=</span> table;
+  }
+
+  <span class="pl-k">static</span> <span class="pl-en">findAll</span>() {
+    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>SELECT * FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span><span class="pl-pds">`</span></span>);
+  }
+
+  <span class="pl-k">static</span> <span class="pl-en">findById</span>(<span class="pl-smi">id</span>) {
+    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>SELECT * FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> WHERE id = ?<span class="pl-pds">`</span></span>, [id]);
+  }
+
+  <span class="pl-k">static</span> <span class="pl-en">remove</span>(<span class="pl-smi">id</span>) {
+    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>DELETE FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> WHERE id = ?<span class="pl-pds">`</span></span>, [id]);
+  }
+
+  <span class="pl-en">save</span>(<span class="pl-smi">obj</span>) {
+    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>INSERT INTO <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> SET ?<span class="pl-pds">`</span></span>, [obj]);
+  }
+}
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-c1">ORM</span>;</pre></div>
+
+<p>query is designed for simplifying the model and <strong>use Promise</strong> !
+Notice the <strong>use</strong> static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-c">// Book.js</span>
+<span class="pl-k">let</span> <span class="pl-c1">ORM</span> <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>utils/ORM<span class="pl-pds">'</span></span>);
+
+<span class="pl-k">class</span> <span class="pl-en">Book</span> <span class="pl-k">extends</span> <span class="pl-en">ORM</span> {
+
+  <span class="pl-en">constructor</span>(<span class="pl-smi">opt</span>) {
+    <span class="pl-v">super</span>(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>);
+    <span class="pl-v">this</span>.<span class="pl-c1">title</span> <span class="pl-k">=</span> opt.<span class="pl-c1">title</span>;
+
+    <span class="pl-k">return</span> <span class="pl-v">this</span>;
+  }
+
+  get <span class="pl-en">book</span>() {
+    <span class="pl-k">return</span> {
+      title<span class="pl-k">:</span> <span class="pl-v">this</span>.<span class="pl-c1">title</span>
+    }
+  }
+
+  <span class="pl-en">save</span>() {
+    <span class="pl-k">return</span> <span class="pl-v">super</span>.save(<span class="pl-v">this</span>.book);
+  }
+}
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Book</span>();</pre></div>
+
+<p>The class contructor return <strong>this</strong> for chaining and for example use the save method.
+So when you call the method in your controller, you have to use the <strong>then</strong> and <strong>catch</strong> functions :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-c">// BooksController.js</span>
+<span class="pl-k">let</span> Book <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>app/models/Book<span class="pl-pds">'</span></span>);
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> {
+  index<span class="pl-k">:</span> {
+    <span class="pl-en">get</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>) {
+
+      Book.findAll()
+        .then(books <span class="pl-k">=&gt;</span> {
+          res.locals.<span class="pl-c1">title</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Home<span class="pl-pds">"</span></span>;
+          res.locals.books <span class="pl-k">=</span> books;
+          res.render(<span class="pl-s"><span class="pl-pds">'</span>index<span class="pl-pds">'</span></span>);
+        })
+        .catch(err <span class="pl-k">=&gt;</span> {
+          <span class="pl-en">console</span>.<span class="pl-c1">error</span>(err);
+        });
+
+    }
+  }
+}</pre></div>
+
+<p>Easy to read and understand isn't it ?</p>
+
+<h3>
+<a id="views" class="anchor" href="#views" aria-hidden="true"><span class="octicon octicon-link"></span></a>Views</h3>
+
+<p>This boilerplate use <strong>Jade</strong> for templating, if you prefer ejs, you just need to edit the <code>middleware.js</code> file in the config folder.</p>
+
+<p>As I said for controller and routes, it's almost the same for the views. You should create a folder based on your routes (ex: users), create a
+<strong>users</strong> folder who will contain all the view concerned by the user.</p>
+
+<h3>
+<a id="routes" class="anchor" href="#routes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Routes</h3>
+
+<p>The routes files are used for making the relation between your controller and the URLs. Here is an example :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-c">// IndexRoute.js</span>
+
+<span class="pl-c">/**</span>
+<span class="pl-c">* Home Route</span>
+<span class="pl-c">* path: /</span>
+<span class="pl-c">******************** */</span>
+
+<span class="pl-k">let</span> express    <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>express<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> Controller <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>app/controllers/IndexController<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> router     <span class="pl-k">=</span> express.Router();
+
+
+router.get(<span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>, Controller.<span class="pl-c1">index</span>.get);
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> router;</pre></div>
+
+<p>As you can see, I put a function according the HTTP verb like here <strong>index.get</strong> for the GET on <code>/</code>.</p>
+
+<h3>
+<a id="routerjs" class="anchor" href="#routerjs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Router.js</h3>
+
+<p>The <strong>Router.js</strong> may intrigue you, it serves to handle all of your routes. Here is an example :</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-c">// Router.js</span>
+
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> [
+  {
+    path<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/<span class="pl-pds">'</span></span>,
+    handler<span class="pl-k">:</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>app/routes/IndexRoute<span class="pl-pds">'</span></span>),
+  },
+  {
+    path<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>/books<span class="pl-pds">'</span></span>,
+    handler<span class="pl-k">:</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>app/routes/BooksRoute<span class="pl-pds">'</span></span>),
+  },
+];
+</pre></div>
+
+<h2>
+<a id="assets" class="anchor" href="#assets" aria-hidden="true"><span class="octicon octicon-link"></span></a>Assets</h2>
+
+<p>This boilerplate set the <strong>assets</strong> folder for all of your static files. Some folders are already available :</p>
+
+<ul>
+<li>stylesheets</li>
+<li>javascripts</li>
+<li>images</li>
+<li>fonts</li>
+</ul>
+
+<p>In your views, the links will look like this : <code>/stylesheets/style.css</code> or <code>/images/logo.png</code>.</p>
+
+<h2>
+<a id="config" class="anchor" href="#config" aria-hidden="true"><span class="octicon octicon-link"></span></a>Config</h2>
+
+<p>The folder <strong>config</strong> is design to keep all config files like middleware, mysql config, etc..
+The idea of this folder is to separate the logic of the configuration. With MySQL as example, you just have to create the connection and export the object for making queries.</p>
+
+<h2>
+<a id="testing" class="anchor" href="#testing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing</h2>
+
+<p>This boilerplate use <a href="https://mochajs.org">Mocha</a> and <a href="https://github.com/visionmedia/superagent">superagent</a> for testing</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/DCKT/express-boilerplate">Express-boilerplate</a> is maintained by <a href="https://github.com/DCKT">DCKT</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
