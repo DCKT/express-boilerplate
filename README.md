@@ -246,3 +246,7 @@ In your views, the links will look like this : `/stylesheets/style.css` or `/ima
 
 The folder **config** is design to keep all config files like middleware, mysql config, etc..
 The idea of this folder is to separate the logic of the configuration. With MySQL as example, you just have to create the connection and export the object for making queries.
+
+## Testing
+
+This boilerplate use [Mocha](https://mochajs.org) and [superagent](https://github.com/visionmedia/superagent) for testing
