@@ -6,7 +6,7 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "start": "./node_modules/.bin/nodemon -w ./ --harmony_destructuring",
-    "new": "node tasks/new.js --harmony_destructuring"
+    "db:tables:create": "node ./tasks/createTables.js"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,7 @@
     "express": "~4.9.0",
     "express-session": "^1.11.3",
     "jade": "~1.6.0",
-    "method-override": "^2.3.0",
-    "mysql": "^2.6.1"
+    "sequelize": "^3.9.0"
   },
   "homepage": "https://github.com/DCKT/express-boilerplate",
   "devDependencies": {

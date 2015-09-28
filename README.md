@@ -62,124 +62,38 @@ module.exports = {
 
 ### Models
 
-This boilerplate use MySQL as default. The configuration file is called **mysql.js** and is located in the **config** folder. Here is the basic setup :
+I chose [Sequelize](http://docs.sequelizejs.com/en/latest/) for the ORM because it has a great syntax based on Promise and has a great documentation.
+Moreover, you can choose the database type of you want (MySQL, Postgre, Cassandra, etc...).
+With this way, you can create and share your models very easly.
+
+Each model must have a **sync** in the *createTables* task wich can be run with the npm command : `npm run db:tables:create`.
+
+Example :
 ```js
 'use strict';
+// app/models/Book.js
 
-let mysql = require('mysql');
-
-var connection = mysql.createConnection({
-  host: 'localhost',
-  database: 'test',
-  user: 'root',
-  password: ''
+let db   = rootRequire('config/db');
+let Book = db.define('book', {
+  title: {
+    type: db._Sequelize.STRING,
+  },
 });
 
-connection.connect(function (err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
+module.exports = Book;
+```
+
+```js
+'use strict';
+require('../utils/rootRequire')();
+let Book = rootRequire('app/models/Book');
+
+Book.sync().then(() => {
+  console.log('Creating table Book');
+  // Todo : Kill the script
 });
 
-module.exports = connection;
 ```
-
-Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like **Book.js**. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
-This file will use a function utility called **query**. Here is an example :
-
-```js
-'use strict';
-
-// ORM.js
-let query = rootRequire('utils/query');
-
-class ORM {
-  constructor(table) {
-    this.table = table;
-  }
-
-  static use(table) {
-    this.table = table;
-  }
-
-  static findAll() {
-    return query(`SELECT * FROM ${this.table}`);
-  }
-
-  static findById(id) {
-    return query(`SELECT * FROM ${this.table} WHERE id = ?`, [id]);
-  }
-
-  static remove(id) {
-    return query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
-  }
-
-  save(obj) {
-    return query(`INSERT INTO ${this.table} SET ?`, [obj]);
-  }
-}
-
-module.exports = ORM;
-```
-
-query is designed for simplifying the model and **use Promise** !
-Notice the **use** static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :
-
-```js
-'use strict';
-// Book.js
-let ORM = rootRequire('utils/ORM');
-
-class Book extends ORM {
-
-  constructor(opt) {
-    super('books');
-    this.title = opt.title;
-
-    return this;
-  }
-
-  get book() {
-    return {
-      title: this.title
-    }
-  }
-
-  save() {
-    return super.save(this.book);
-  }
-}
-
-module.exports = new Book();
-```
-The class contructor return **this** for chaining and for example use the save method.
-So when you call the method in your controller, you have to use the **then** and **catch** functions :
-```js
-'use strict';
-// BooksController.js
-let Book = require('app/models/Book');
-
-module.exports = {
-  index: {
-    get(req, res) {
-
-      Book.findAll()
-        .then(books => {
-          res.locals.title = "Home";
-          res.locals.books = books;
-          res.render('index');
-        })
-        .catch(err => {
-          console.error(err);
-        });
-
-    }
-  }
-}
-```
-
-Easy to read and understand isn't it ?
 
 ### Views
 

@@ -1,5 +1,4 @@
 'use strict';
-
 let Book = rootRequire('app/models/Book');
 
 module.exports = {
@@ -25,8 +24,7 @@ module.exports = {
       let { title } = req.body;
 
       Book
-        .new({ title })
-        .save()
+        .create({ title })
         .then(() => {
 
           req.session.flash = {
