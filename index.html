@@ -91,119 +91,35 @@ First, you have an <strong>app</strong> folder who will contain all code of your
 <h3>
 <a id="models" class="anchor" href="#models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Models</h3>
 
-<p>This boilerplate use MySQL as default. The configuration file is called <strong>mysql.js</strong> and is located in the <strong>config</strong> folder. Here is the basic setup :</p>
+<p>I chose <a href="http://docs.sequelizejs.com/en/latest/">Sequelize</a> for the ORM because it has a great syntax based on Promise and has a great documentation.
+Moreover, you can choose the database type of you want (MySQL, Postgre, Cassandra, etc...).
+With this way, you can create and share your models very easly.</p>
+
+<p>Each model must have a <strong>sync</strong> in the <em>createTables</em> task wich can be run with the npm command : <code>npm run db:tables:create</code>.</p>
+
+<p>Example :</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-c">// app/models/Book.js</span>
 
-<span class="pl-k">let</span> mysql <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>mysql<span class="pl-pds">'</span></span>);
-
-<span class="pl-k">var</span> connection <span class="pl-k">=</span> mysql.createConnection({
-  host<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>localhost<span class="pl-pds">'</span></span>,
-  database<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>test<span class="pl-pds">'</span></span>,
-  user<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>root<span class="pl-pds">'</span></span>,
-  password<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span><span class="pl-pds">'</span></span>
+<span class="pl-k">let</span> db   <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>config/db<span class="pl-pds">'</span></span>);
+<span class="pl-k">let</span> Book <span class="pl-k">=</span> db.define(<span class="pl-s"><span class="pl-pds">'</span>book<span class="pl-pds">'</span></span>, {
+  title<span class="pl-k">:</span> {
+    type<span class="pl-k">:</span> db._Sequelize.STRING,
+  },
 });
 
-connection.connect(<span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
-  <span class="pl-k">if</span> (err) {
-    <span class="pl-en">console</span>.<span class="pl-c1">error</span>(<span class="pl-s"><span class="pl-pds">'</span>error connecting: <span class="pl-pds">'</span></span> <span class="pl-k">+</span> err.stack);
-    <span class="pl-k">return</span>;
-  }
+<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> Book;</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
+<span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>../utils/rootRequire<span class="pl-pds">'</span></span>)();
+<span class="pl-k">let</span> Book <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>app/models/Book<span class="pl-pds">'</span></span>);
+
+Book.sync().then(()<span class="pl-k"> =&gt;</span> {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>Creating table Book<span class="pl-pds">'</span></span>);
+  <span class="pl-c">// Todo : Kill the script</span>
 });
-
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> connection;</pre></div>
-
-<p>Don't forget to use the correct database and login/password ! You can now create a model based on the route or something you want like <strong>Book.js</strong>. Each model should be a JavaScript class subclassing the ORM.js model. The ORM contains the basics queries needed in a model.
-This file will use a function utility called <strong>query</strong>. Here is an example :</p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
-
-<span class="pl-c">// ORM.js</span>
-<span class="pl-k">let</span> query <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>utils/query<span class="pl-pds">'</span></span>);
-
-<span class="pl-k">class</span> <span class="pl-en">ORM</span> {
-  <span class="pl-en">constructor</span>(<span class="pl-smi">table</span>) {
-    <span class="pl-v">this</span>.table <span class="pl-k">=</span> table;
-  }
-
-  <span class="pl-k">static</span> <span class="pl-en">use</span>(<span class="pl-smi">table</span>) {
-    <span class="pl-v">this</span>.table <span class="pl-k">=</span> table;
-  }
-
-  <span class="pl-k">static</span> <span class="pl-en">findAll</span>() {
-    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>SELECT * FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span><span class="pl-pds">`</span></span>);
-  }
-
-  <span class="pl-k">static</span> <span class="pl-en">findById</span>(<span class="pl-smi">id</span>) {
-    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>SELECT * FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> WHERE id = ?<span class="pl-pds">`</span></span>, [id]);
-  }
-
-  <span class="pl-k">static</span> <span class="pl-en">remove</span>(<span class="pl-smi">id</span>) {
-    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>DELETE FROM <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> WHERE id = ?<span class="pl-pds">`</span></span>, [id]);
-  }
-
-  <span class="pl-en">save</span>(<span class="pl-smi">obj</span>) {
-    <span class="pl-k">return</span> query(<span class="pl-s"><span class="pl-pds">`</span>INSERT INTO <span class="pl-s1"><span class="pl-pse">${</span><span class="pl-v">this</span>.table<span class="pl-pse">}</span></span> SET ?<span class="pl-pds">`</span></span>, [obj]);
-  }
-}
-
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-c1">ORM</span>;</pre></div>
-
-<p>query is designed for simplifying the model and <strong>use Promise</strong> !
-Notice the <strong>use</strong> static method, she is designed to set the table to use for your model, obviously, you need to call her before the subclasssing :</p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
-<span class="pl-c">// Book.js</span>
-<span class="pl-k">let</span> <span class="pl-c1">ORM</span> <span class="pl-k">=</span> rootRequire(<span class="pl-s"><span class="pl-pds">'</span>utils/ORM<span class="pl-pds">'</span></span>);
-
-<span class="pl-k">class</span> <span class="pl-en">Book</span> <span class="pl-k">extends</span> <span class="pl-en">ORM</span> {
-
-  <span class="pl-en">constructor</span>(<span class="pl-smi">opt</span>) {
-    <span class="pl-v">super</span>(<span class="pl-s"><span class="pl-pds">'</span>books<span class="pl-pds">'</span></span>);
-    <span class="pl-v">this</span>.<span class="pl-c1">title</span> <span class="pl-k">=</span> opt.<span class="pl-c1">title</span>;
-
-    <span class="pl-k">return</span> <span class="pl-v">this</span>;
-  }
-
-  get <span class="pl-en">book</span>() {
-    <span class="pl-k">return</span> {
-      title<span class="pl-k">:</span> <span class="pl-v">this</span>.<span class="pl-c1">title</span>
-    }
-  }
-
-  <span class="pl-en">save</span>() {
-    <span class="pl-k">return</span> <span class="pl-v">super</span>.save(<span class="pl-v">this</span>.book);
-  }
-}
-
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Book</span>();</pre></div>
-
-<p>The class contructor return <strong>this</strong> for chaining and for example use the save method.
-So when you call the method in your controller, you have to use the <strong>then</strong> and <strong>catch</strong> functions :</p>
-
-<div class="highlight highlight-source-js"><pre><span class="pl-s"><span class="pl-pds">'</span>use strict<span class="pl-pds">'</span></span>;
-<span class="pl-c">// BooksController.js</span>
-<span class="pl-k">let</span> Book <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>app/models/Book<span class="pl-pds">'</span></span>);
-
-<span class="pl-c1">module</span>.exports <span class="pl-k">=</span> {
-  index<span class="pl-k">:</span> {
-    <span class="pl-en">get</span>(<span class="pl-smi">req</span>, <span class="pl-smi">res</span>) {
-
-      Book.findAll()
-        .then(books <span class="pl-k">=&gt;</span> {
-          res.locals.<span class="pl-c1">title</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Home<span class="pl-pds">"</span></span>;
-          res.locals.books <span class="pl-k">=</span> books;
-          res.render(<span class="pl-s"><span class="pl-pds">'</span>index<span class="pl-pds">'</span></span>);
-        })
-        .catch(err <span class="pl-k">=&gt;</span> {
-          <span class="pl-en">console</span>.<span class="pl-c1">error</span>(err);
-        });
-
-    }
-  }
-}</pre></div>
-
-<p>Easy to read and understand isn't it ?</p>
+</pre></div>
 
 <h3>
 <a id="views" class="anchor" href="#views" aria-hidden="true"><span class="octicon octicon-link"></span></a>Views</h3>
