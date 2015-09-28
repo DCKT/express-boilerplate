@@ -1,5 +1,6 @@
 'use strict';
 require('./utils/rootRequire')();
+require('./utils/productionMode')();
 let express = require('express');
 let http    = require('http');
 let Router  = rootRequire('app/Router');
