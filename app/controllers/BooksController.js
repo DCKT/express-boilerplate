@@ -16,7 +16,6 @@ module.exports = {
   },
   new: {
     get(req, res) {
-      console.log(res.locals);
       res.render('books/new');
     },
 
