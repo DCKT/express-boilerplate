@@ -164,3 +164,15 @@ The idea of this folder is to separate the logic of the configuration. With MySQ
 ## Testing
 
 This boilerplate use [Mocha](https://mochajs.org) and [superagent](https://github.com/visionmedia/superagent) for testing
+
+## Production
+
+I recommand you to use [PM2](https://github.com/Unitech/pm2) as process manager who is really simple to handle.
+Don't forget to set your **NODE_ENV** to **production** !
+
+```
+set NODE_ENV=production
+```
+
+When the NODE_ENV is set to *production*, the [compression module](https://github.com/expressjs/compression) will be called.
+Feel free to use the global **PROD_ENV** variable to use differents configurations for your application.
