@@ -6,6 +6,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha",
     "start": "./node_modules/.bin/nodemon server.js --exec babel-node",
+    "build": "babel lib -d dist",
+    "serve": "node dist/index.js",
     "db:tables:create": "node ./tasks/createTables.js"
   },
   "repository": {
