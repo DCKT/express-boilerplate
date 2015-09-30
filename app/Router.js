@@ -5,6 +5,6 @@ module.exports = [
   },
   {
     path: '/books',
-    handler: rootRequire('app/routes/BooksRoute'),
+    handler: rootRequire('app/routes/BookRoute'),
   },
 ];

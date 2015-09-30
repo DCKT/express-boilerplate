@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
-    "start": "./node_modules/.bin/nodemon -w ./ --harmony_destructuring",
+    "start": "./node_modules/.bin/nodemon server.js --debug --exec babel-node",
+    "build": "babel lib -d dist",
+    "serve": "node dist/index.js",
     "db:tables:create": "node ./tasks/createTables.js"
   },
   "repository": {
@@ -24,18 +26,21 @@
     "url": "https://github.com/DCKT/express-boilerplate/issues"
   },
   "dependencies": {
+    "babel": "^5.8.23",
     "body-parser": "^1.9.0",
     "compression": "^1.5.2",
     "express": "~4.9.0",
     "express-session": "^1.11.3",
     "jade": "~1.6.0",
-    "sequelize": "^3.9.0"
+    "mysql": "^2.9.0",
+    "sequelize": "^3.10.0"
   },
   "homepage": "https://github.com/DCKT/express-boilerplate",
   "devDependencies": {
     "mocha": "^2.3.3",
     "node-fetch": "^1.0.6",
     "nodemon": "^1.7.0",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "babel-node": "*"
   }
 }
