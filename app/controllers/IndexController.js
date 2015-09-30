@@ -1,9 +1,7 @@
 'use strict';
 
-module.exports = {
-  index: {
-    get(req, res) {
-      res.render('index');
-    },
-  },
-};
+export default class IndexController {
+  static index(req, res) {
+    res.render('index')
+  }
+}
