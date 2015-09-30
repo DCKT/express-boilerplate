@@ -1,7 +1,6 @@
 'use strict';
 
 let bodyParser     = require('body-parser');
-let methodOverride = require('method-override');
 let path           = require('path');
 let session        = require('express-session');
 let compression    = require('compression');

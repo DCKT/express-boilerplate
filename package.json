@@ -32,8 +32,7 @@
     "express-session": "^1.11.3",
     "jade": "~1.6.0",
     "sequelize": "^3.10.0",
-    "mysql": "^2.9.0",
-    "method-override": "^2.3.5"
+    "mysql": "^2.9.0"
   },
   "homepage": "https://github.com/DCKT/express-boilerplate",
   "devDependencies": {
