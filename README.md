@@ -12,6 +12,8 @@ All the code is written with ES2015 syntax, you need the Node v4 version.
 
 - Clone the repo
 - `npm i`
+- `mysqld` and define `config/db.js`
+- `npm run db:tables:create`
 - `npm start` -> Will start a nodemon instance for your server
 
 ## ES2015
