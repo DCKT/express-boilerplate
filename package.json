@@ -38,6 +38,7 @@
     "mocha": "^2.3.3",
     "node-fetch": "^1.0.6",
     "nodemon": "^1.7.0",
-    "superagent": "^1.4.0"
+    "superagent": "^1.4.0",
+    "babel-node": "*"
   }
 }
