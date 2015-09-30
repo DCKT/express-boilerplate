@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha",
-    "start": "./node_modules/.bin/nodemon -w ./ --harmony_destructuring",
+    "start": "./node_modules/.bin/nodemon server.js --exec babel-node",
     "db:tables:create": "node ./tasks/createTables.js"
   },
   "repository": {
